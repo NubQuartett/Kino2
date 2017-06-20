@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import de.uni_hamburg.informatik.swt.se2.kino.fachwerte.Platz;
 import de.uni_hamburg.informatik.swt.se2.kino.materialien.Kinosaal;
 import de.uni_hamburg.informatik.swt.se2.kino.materialien.Vorstellung;
+import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.SubwerkzeugObserver;
 
 /**
  * Mit diesem Werkzeug können Plätze verkauft und storniert werden. Es arbeitet
@@ -17,6 +18,10 @@ import de.uni_hamburg.informatik.swt.se2.kino.materialien.Vorstellung;
  * Plätze schon verkauft und welche noch frei sind.
  * 
  * Dieses Werkzeug ist ein eingebettetes Subwerkzeug.
+ * 
+ * TODO: die Klasse bekommt ein Subwerkzeug, wenn Karten verkauft werden, wird ein 
+ * Objekt von diese als Exemplarvarible gespeichert. Über einen Listener wird dann 
+ * über Aktionen in dieser Klasse informiert.
  * 
  * @author SE2-Team
  * @version SoSe 2017
@@ -27,6 +32,7 @@ public class PlatzVerkaufsWerkzeug
     private Vorstellung _vorstellung;
 
     private PlatzVerkaufsWerkzeugUI _ui;
+    private int _preis;
 
     /**
      * Initialisiert das PlatzVerkaufsWerkzeug.
@@ -52,6 +58,7 @@ public class PlatzVerkaufsWerkzeug
 
     /**
      * Fügt der UI die Funktionalität hinzu mit entsprechenden Listenern.
+     * TODO: hier wird das neue Fenster geöffnet
      */
     private void registriereUIAktionen()
     {
@@ -60,7 +67,36 @@ public class PlatzVerkaufsWerkzeug
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                fuehreBarzahlungDurch();
+                
+                //hier wird das neue Fenster geöffnet
+            	//entweder wird diese Klasse erst als Beobachter registriert, wenn das Fenster erzuegt wird,
+            	//oder sie erbt von der Klasse SubwerkzeugObserver und ist standartdmäßi Beobachter,
+            	//dann bennötigt sie eine Methode reagiereAufAenderung
+                final VerkaufsFensterWerkzeug _verkaufsfenster = new VerkaufsFensterWerkzeug(_preis); 
+                
+                _verkaufsfenster.get_buttonabbrechen().addActionListener(new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+                	
+                });
+                
+                _verkaufsfenster.get_buttonok().addActionListener(new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						// TODO Auto-generated method stub
+						fuehreBarzahlungDurch();
+					}
+                	
+                });
+                
+                
+                
+                
             }
         });
 
@@ -87,6 +123,7 @@ public class PlatzVerkaufsWerkzeug
 
     /**
      * Startet die Barzahlung.
+     * TODO: diese Funktion wird auch von dem neuen Fenster zur Bezahlung genutzt
      */
     private void fuehreBarzahlungDurch()
     {
@@ -113,15 +150,15 @@ public class PlatzVerkaufsWerkzeug
     {
         if (istVerkaufenMoeglich(plaetze))
         {
-            int preis = _vorstellung.getPreisFuerPlaetze(plaetze);
+            _preis = _vorstellung.getPreisFuerPlaetze(plaetze);
             _ui.getPreisLabel().setText(
-                    "Gesamtpreis: " + preis + " Eurocent");
+                    "Gesamtpreis: " + _preis + " Eurocent");
         }
         else if (istStornierenMoeglich(plaetze))
         {
-            int preis = _vorstellung.getPreisFuerPlaetze(plaetze);
+            _preis = _vorstellung.getPreisFuerPlaetze(plaetze);
             _ui.getPreisLabel().setText(
-                    "Gesamtstorno: " + preis + " Eurocent");
+                    "Gesamtstorno: " + _preis + " Eurocent");
         }
         else if (!plaetze.isEmpty())
         {
