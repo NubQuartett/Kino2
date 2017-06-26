@@ -1,5 +1,7 @@
 package de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.platzverkauf;
 
+import java.awt.Dialog;
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -76,8 +78,8 @@ public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
             	//entweder wird diese Klasse erst als Beobachter registriert, wenn das Fenster erzuegt wird,
             	//oder sie erbt von der Klasse SubwerkzeugObserver und ist standartdmäßi Beobachter,
             	//dann bennötigt sie eine Methode reagiereAufAenderung
-                final VerkaufsFensterWerkzeug _verkaufsfenster = new VerkaufsFensterWerkzeug(_preis); 
-                
+               /* final VerkaufsFensterWerkzeug _verkaufsfenster = new VerkaufsFensterWerkzeug(_preis); 
+          
                 _verkaufsfenster.get_buttonabbrechen().addActionListener(new ActionListener(){
 
 					@Override
@@ -85,6 +87,7 @@ public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
 						// TODO Auto-generated method stub
 						
 					}
+					
                 	
                 });
                 
@@ -94,9 +97,10 @@ public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
 					public void actionPerformed(ActionEvent arg0) {
 						// TODO Auto-generated method stub
 						fuehreBarzahlungDurch();
+						
 					}
                 	
-                });
+                });*/
                 
                 
                 
@@ -129,7 +133,7 @@ public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
      * Startet die Barzahlung.
      * TODO: diese Funktion wird auch von dem neuen Fenster zur Bezahlung genutzt
      */
-    private void fuehreBarzahlungDurch()
+    public void fuehreBarzahlungDurch()
     {
         verkaufePlaetze(_vorstellung);
     }
@@ -265,5 +269,9 @@ public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
         Set<Platz> plaetze = _ui.getPlatzplan().getAusgewaehltePlaetze();
         vorstellung.stornierePlaetze(plaetze);
         aktualisierePlatzplan();
+    }
+    
+    public int get_preis(){
+    	return _preis;
     }
 }

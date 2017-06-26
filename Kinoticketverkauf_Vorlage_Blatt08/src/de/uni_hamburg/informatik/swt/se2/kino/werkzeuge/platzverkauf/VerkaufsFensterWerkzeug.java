@@ -1,9 +1,11 @@
 package de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.platzverkauf;
 
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 
 import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.ObservableSubwerkzeug;
 
@@ -12,13 +14,20 @@ public class VerkaufsFensterWerkzeug extends ObservableSubwerkzeug{
 	private VerkaufsFensterWerkzeugUI _ui;
 	private int _restbetrag;
 	
-	public VerkaufsFensterWerkzeug(int restbetrag){
+	public VerkaufsFensterWerkzeug(JFrame frame, ModalityType MT, int preis){
 		
-		_ui = new VerkaufsFensterWerkzeugUI(restbetrag);
+		_ui = new VerkaufsFensterWerkzeugUI(frame, MT);
+		_ui.set_betrag(preis);
 		registriereUIAktionen();
 	}
 
 	
+	public VerkaufsFensterWerkzeug(ActionListener actionListener,
+			ModalityType documentModal) {
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public void registriereUIAktionen(){
 		_ui.get_bezahlt().addActionListener(new ActionListener(){
 
@@ -68,6 +77,7 @@ public class VerkaufsFensterWerkzeug extends ObservableSubwerkzeug{
 		_ui.get_buttonabbrechen().addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0){
+				informiereUeberAenderung();
 				_ui.close();
 			}
 		});

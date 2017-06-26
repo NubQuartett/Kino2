@@ -1,5 +1,6 @@
 package de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.kasse;
 
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,6 +11,7 @@ import de.uni_hamburg.informatik.swt.se2.kino.materialien.Vorstellung;
 import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.SubwerkzeugObserver;
 import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.datumsauswaehler.DatumAuswaehlWerkzeug;
 import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.platzverkauf.PlatzVerkaufsWerkzeug;
+import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.platzverkauf.VerkaufsFensterWerkzeug;
 import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.vorstellungsauswaehler.VorstellungsAuswaehlWerkzeug;
 
 /**
@@ -32,6 +34,7 @@ public class KassenWerkzeug
     private PlatzVerkaufsWerkzeug _platzVerkaufsWerkzeug;
     private DatumAuswaehlWerkzeug _datumAuswaehlWerkzeug;
     private VorstellungsAuswaehlWerkzeug _vorstellungAuswaehlWerkzeug;
+    private VerkaufsFensterWerkzeug _verkaufsfensterwerkzeug;
 
     /**
      * Initialisiert das Kassenwerkzeug.
@@ -93,7 +96,32 @@ public class KassenWerkzeug
 			@Override
 			public void reagiereAufAenderung() {
 				// TODO Auto-generated method stubddd
-				deaktiviereFenster();
+				changeFenster();
+				//muss das VerkaufsfensterWErkzeug erzeugen
+				 VerkaufsFensterWerkzeug _verkaufsfenster = new VerkaufsFensterWerkzeug(_ui.getFrame(), ModalityType.DOCUMENT_MODAL, 
+						 _platzVerkaufsWerkzeug.get_preis()); 
+		          
+                _verkaufsfenster.get_buttonabbrechen().addActionListener(new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+                	
+                });
+                
+                _verkaufsfenster.get_buttonok().addActionListener(new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						// TODO Auto-generated method stub
+						_platzVerkaufsWerkzeug.fuehreBarzahlungDurch();
+						
+					}
+                	
+                });
 			}
         	
         });
@@ -136,7 +164,8 @@ public class KassenWerkzeug
      * deaktiviert das Fenster
      */
     
-    private void deaktiviereFenster(){
+    private void changeFenster(){
+    	
     	_ui.getFrame().setEnabled(false);
     }
 
