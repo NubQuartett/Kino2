@@ -77,10 +77,10 @@ public class KassenWerkzeug
             {
                 setzeTagesplanFuerAusgewaehltesDatum();
             }
+            
         });
 
-        _vorstellungAuswaehlWerkzeug
-                .registriereBeobachter(new SubwerkzeugObserver()
+        _vorstellungAuswaehlWerkzeug.registriereBeobachter(new SubwerkzeugObserver()
                 {
                     @Override
                     public void reagiereAufAenderung()
@@ -88,6 +88,15 @@ public class KassenWerkzeug
                         setzeAusgewaehlteVorstellung();
                     }
                 });
+        _platzVerkaufsWerkzeug.registriereBeobachter(new SubwerkzeugObserver()
+        {
+			@Override
+			public void reagiereAufAenderung() {
+				// TODO Auto-generated method stubddd
+				deaktiviereFenster();
+			}
+        	
+        });
     }
 
     /**
@@ -121,6 +130,14 @@ public class KassenWerkzeug
     private void setzeAusgewaehlteVorstellung()
     {
         _platzVerkaufsWerkzeug.setVorstellung(getAusgewaehlteVorstellung());
+    }
+    
+    /**
+     * deaktiviert das Fenster
+     */
+    
+    private void deaktiviereFenster(){
+    	_ui.getFrame().setEnabled(false);
     }
 
     /**

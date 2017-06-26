@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import de.uni_hamburg.informatik.swt.se2.kino.fachwerte.Platz;
 import de.uni_hamburg.informatik.swt.se2.kino.materialien.Kinosaal;
 import de.uni_hamburg.informatik.swt.se2.kino.materialien.Vorstellung;
+import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.ObservableSubwerkzeug;
 import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.SubwerkzeugObserver;
 
 /**
@@ -26,7 +27,7 @@ import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.SubwerkzeugObserver;
  * @author SE2-Team
  * @version SoSe 2017
  */
-public class PlatzVerkaufsWerkzeug
+public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
 {
     // Die aktuelle Vorstellung, deren Plätze angezeigt werden. Kann null sein.
     private Vorstellung _vorstellung;
@@ -67,6 +68,9 @@ public class PlatzVerkaufsWerkzeug
             @Override
             public void actionPerformed(ActionEvent e)
             {
+            	//deaktiviert das aktuelle Fenster
+            	informiereUeberAenderung();
+            	
                 
                 //hier wird das neue Fenster geöffnet
             	//entweder wird diese Klasse erst als Beobachter registriert, wenn das Fenster erzuegt wird,

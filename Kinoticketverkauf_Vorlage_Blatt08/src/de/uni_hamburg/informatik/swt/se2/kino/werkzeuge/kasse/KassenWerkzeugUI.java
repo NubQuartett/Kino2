@@ -74,6 +74,13 @@ class KassenWerkzeugUI
     {
         _frame.dispose();
     }
+    
+    /**
+     * gibt das Fenster zurück
+     */
+    public JFrame getFrame(){
+    	return _frame;
+    }
 
     /**
      * Erzeugt das Panel, in dem das Datum, der Kinosaal und die Vorstellung
