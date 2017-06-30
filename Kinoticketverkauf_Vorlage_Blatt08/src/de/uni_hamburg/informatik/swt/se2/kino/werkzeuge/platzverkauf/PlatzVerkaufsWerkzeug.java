@@ -70,41 +70,8 @@ public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
             @Override
             public void actionPerformed(ActionEvent e)
             {
-            	//deaktiviert das aktuelle Fenster
+            	//das neue FEnster wird in der Klasse KassenWErkzeug geöffnet
             	informiereUeberAenderung();
-            	
-                
-                //hier wird das neue Fenster geöffnet
-            	//entweder wird diese Klasse erst als Beobachter registriert, wenn das Fenster erzuegt wird,
-            	//oder sie erbt von der Klasse SubwerkzeugObserver und ist standartdmäßi Beobachter,
-            	//dann bennötigt sie eine Methode reagiereAufAenderung
-               /* final VerkaufsFensterWerkzeug _verkaufsfenster = new VerkaufsFensterWerkzeug(_preis); 
-          
-                _verkaufsfenster.get_buttonabbrechen().addActionListener(new ActionListener(){
-
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-					
-                	
-                });
-                
-                _verkaufsfenster.get_buttonok().addActionListener(new ActionListener(){
-
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						// TODO Auto-generated method stub
-						fuehreBarzahlungDurch();
-						
-					}
-                	
-                });*/
-                
-                
-                
-                
             }
         });
 

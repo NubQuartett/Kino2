@@ -95,8 +95,6 @@ public class KassenWerkzeug
         {
 			@Override
 			public void reagiereAufAenderung() {
-				// TODO Auto-generated method stubddd
-				changeFenster();
 				//muss das VerkaufsfensterWErkzeug erzeugen
 				 VerkaufsFensterWerkzeug _verkaufsfenster = new VerkaufsFensterWerkzeug(_ui.getFrame(), ModalityType.DOCUMENT_MODAL, 
 						 _platzVerkaufsWerkzeug.get_preis()); 
@@ -160,14 +158,7 @@ public class KassenWerkzeug
         _platzVerkaufsWerkzeug.setVorstellung(getAusgewaehlteVorstellung());
     }
     
-    /**
-     * deaktiviert das Fenster
-     */
-    
-    private void changeFenster(){
-    	
-    	_ui.getFrame().setEnabled(false);
-    }
+   
 
     /**
      * Beendet die Anwendung.
