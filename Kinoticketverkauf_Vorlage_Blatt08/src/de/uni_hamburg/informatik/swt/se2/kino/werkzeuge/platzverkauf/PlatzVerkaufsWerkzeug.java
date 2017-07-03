@@ -1,19 +1,15 @@
 package de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.platzverkauf;
 
-import java.awt.Dialog;
-import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Set;
-
 import javax.swing.JPanel;
 
 import de.uni_hamburg.informatik.swt.se2.kino.fachwerte.Platz;
 import de.uni_hamburg.informatik.swt.se2.kino.materialien.Kinosaal;
 import de.uni_hamburg.informatik.swt.se2.kino.materialien.Vorstellung;
-import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.ObservableSubwerkzeug;
-import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.SubwerkzeugObserver;
+import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.barzahlung.BarzahlungsWerkzeug;
 
 /**
  * Mit diesem Werkzeug können Plätze verkauft und storniert werden. Es arbeitet
@@ -22,26 +18,27 @@ import de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.SubwerkzeugObserver;
  * 
  * Dieses Werkzeug ist ein eingebettetes Subwerkzeug.
  * 
- * TODO: die Klasse bekommt ein Subwerkzeug, wenn Karten verkauft werden, wird ein 
- * Objekt von diese als Exemplarvarible gespeichert. Über einen Listener wird dann 
- * über Aktionen in dieser Klasse informiert.
- * 
  * @author SE2-Team
  * @version SoSe 2017
  */
-public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
+public class PlatzVerkaufsWerkzeug
 {
+	//TODO int zu Geldbetrag
+    private int _ausgewaehlterGesamtbetrag;
     // Die aktuelle Vorstellung, deren Plätze angezeigt werden. Kann null sein.
     private Vorstellung _vorstellung;
 
     private PlatzVerkaufsWerkzeugUI _ui;
-    private int _preis;
+
+    private BarzahlungsWerkzeug _barzahlungsWerkzeug;
 
     /**
      * Initialisiert das PlatzVerkaufsWerkzeug.
      */
     public PlatzVerkaufsWerkzeug()
     {
+        _barzahlungsWerkzeug = new BarzahlungsWerkzeug();
+
         _ui = new PlatzVerkaufsWerkzeugUI();
         registriereUIAktionen();
         // Am Anfang wird keine Vorstellung angezeigt:
@@ -61,7 +58,6 @@ public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
 
     /**
      * Fügt der UI die Funktionalität hinzu mit entsprechenden Listenern.
-     * TODO: hier wird das neue Fenster geöffnet
      */
     private void registriereUIAktionen()
     {
@@ -70,8 +66,7 @@ public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
             @Override
             public void actionPerformed(ActionEvent e)
             {
-            	//das neue FEnster wird in der Klasse KassenWErkzeug geöffnet
-            	informiereUeberAenderung();
+                fuehreBarzahlungDurch();
             }
         });
 
@@ -98,11 +93,14 @@ public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
 
     /**
      * Startet die Barzahlung.
-     * TODO: diese Funktion wird auch von dem neuen Fenster zur Bezahlung genutzt
      */
-    public void fuehreBarzahlungDurch()
+    private void fuehreBarzahlungDurch()
     {
-        verkaufePlaetze(_vorstellung);
+        _barzahlungsWerkzeug.fuehreBarzahlungDurch(_ausgewaehlterGesamtbetrag);
+        if (_barzahlungsWerkzeug.barzahlungErfolgreich())
+        {
+            verkaufePlaetze(_vorstellung);
+        }
     }
 
     /**
@@ -123,17 +121,21 @@ public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
      */
     private void aktualisierePreisanzeige(Set<Platz> plaetze)
     {
+    	//TODO int preis zu Geldbetrag
+    	//Statt "Eurocent" €    	
+    	_ausgewaehlterGesamtbetrag = 0;
         if (istVerkaufenMoeglich(plaetze))
         {
-            _preis = _vorstellung.getPreisFuerPlaetze(plaetze);
+            int preis = _vorstellung.getPreisFuerPlaetze(plaetze);
             _ui.getPreisLabel().setText(
-                    "Gesamtpreis: " + _preis + " Eurocent");
+                    "Gesamtpreis: " + preis + " Eurocent");
+            _ausgewaehlterGesamtbetrag = preis;
         }
         else if (istStornierenMoeglich(plaetze))
         {
-            _preis = _vorstellung.getPreisFuerPlaetze(plaetze);
+            int preis = _vorstellung.getPreisFuerPlaetze(plaetze);
             _ui.getPreisLabel().setText(
-                    "Gesamtstorno: " + _preis + " Eurocent");
+                    "Gesamtstorno: " + preis + " Eurocent");
         }
         else if (!plaetze.isEmpty())
         {
@@ -236,9 +238,5 @@ public class PlatzVerkaufsWerkzeug extends ObservableSubwerkzeug
         Set<Platz> plaetze = _ui.getPlatzplan().getAusgewaehltePlaetze();
         vorstellung.stornierePlaetze(plaetze);
         aktualisierePlatzplan();
-    }
-    
-    public int get_preis(){
-    	return _preis;
     }
 }
